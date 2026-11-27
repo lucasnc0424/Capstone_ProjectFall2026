@@ -38,3 +38,23 @@ print(df.isnull().sum())
 print(df[["invoice_date", "amount", "days_to_pay"]].describe())
 print("Data types after cleaning:")
 print(df.dtypes)
+
+
+#Step 3, calculate collumns 
+df["invoice_month"] = df["invoice_date"].dt.to_period("M")
+df["is_over_30_days"] = df["days_to_pay"] > 30
+
+#Total and average amount by department
+dept_summary = df.groupby("department")["amount"].agg(["count", "sum", "mean"])
+print("Summary by department:")
+print(dept_summary)
+
+# Total and average amount by expense category
+category_summary = df.groupby("expense_category")["amount"].agg(["count", "sum", "mean"])
+print("\nSummary by expense category:")
+print(category_summary)
+
+# Average days to pay 
+terms_pay = df.groupby("payment_terms")["days_to_pay"].agg(["count", "mean", "median"])
+print("\nDays to pay by payment terms:")
+print(terms_pay)
